@@ -1,0 +1,15 @@
+# Rust
+/target/
+
+# Build output
+/dist/
+*.ndp
+
+# Navidrome SDK downloaded by build.sh
+/.deps/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

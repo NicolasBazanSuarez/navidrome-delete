@@ -1,0 +1,47 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Navidrome plugin
+        run: |
+          chmod +x scripts/build.sh
+          ./scripts/build.sh
+
+      - name: Verify NDP package
+        run: |
+          unzip -l dist/navidrome-delete.ndp
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: navidrome-delete
+          path: dist/navidrome-delete.ndp
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            dist/navidrome-delete.ndp \
+            --title "${GITHUB_REF_NAME}" \
+            --generate-notes

@@ -1,0 +1,54 @@
+{
+  "name": "Navidrome Delete",
+  "author": "Nicolas",
+  "version": "0.1.0",
+  "description": "Dry-run prototype: watches a playlist and identifies the physical files that would be deleted.",
+  "config": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "Navidrome username",
+          "default": "Nikete9000"
+        },
+        "playlist_name": {
+          "type": "string",
+          "title": "Delete playlist",
+          "default": "Delete from disk"
+        },
+        "library_id": {
+          "type": "integer",
+          "title": "Library ID",
+          "default": 1
+        },
+        "cron": {
+          "type": "string",
+          "title": "Check interval",
+          "default": "@every 30s"
+        },
+        "dry_run": {
+          "type": "boolean",
+          "title": "Dry run",
+          "description": "Only log files instead of deleting them",
+          "default": true
+        }
+      }
+    }
+  },
+  "permissions": {
+    "library": {
+      "reason": "Resolve playlist entries to files inside the selected music library",
+      "filesystem": true
+    },
+    "scheduler": {
+      "reason": "Periodically check the delete playlist"
+    },
+    "subsonicapi": {
+      "reason": "Read playlists and their songs from Navidrome"
+    },
+    "users": {
+      "reason": "Access playlists as the configured Navidrome user"
+    }
+  }
+}
